@@ -4,6 +4,7 @@ def position_taken?(board, index)
 end
 
 # Define your WIN_COMBINATIONS constant
+# Define your WIN_COMBINATIONS constant
 WIN_COMBINATIONS = [
   [0,1,2],
   [3,4,5],
@@ -12,64 +13,32 @@ WIN_COMBINATIONS = [
   [1,4,7],
   [2,5,8],
   [0,4,8],
-  [2,4,6]
+  [6,4,2]
 ]
 
-
-
-
-
+# Define won?, full?, draw?, over?, and winner below
 def won?(board)
-  WIN_COMBINATIONS.detect do |win_combination|
-    win_index_1 = win_combination[0]
-    win_index_2 = win_combination[1]
-    win_index_3 = win_combination[2]
-
-    position_1 = board[win_index_1]
-    position_2 = board[win_index_2]
-    position_3 = board[win_index_3]
-
-    if position_1 == "X" && position_2 == "X" && position_3 == "X"
-      return win_combination
-    elsif position_1 == "O" && position_2 == "O" && position_3 == "O"
-      return win_combination
-    else
-      false
-    end
+  WIN_COMBINATIONS.detect do |combo|
+    board[combo[0]] == board[combo[1]] &&
+    board[combo[1]] == board[combo[2]] &&
+    position_taken?(board, combo[0])
   end
 end
 
-# full? method
 def full?(board)
-  #use detect method - example
-  if board.detect{|i| i == " " || i == nil}
-    return false
-  else
-    return true
-  end
+  board.all?{|token| token == "X" || token == "O"}
 end
 
-# draw? method
 def draw?(board)
-  if !won?(board) && full?(board)
-    return true
-  else
-    false
-  end
+  full?(board) && !won?(board)
 end
 
-# over? method
 def over?(board)
-  if won?(board) || draw?(board) || full?(board)
-    return true
-  else
-    false
-  end
+  won?(board) || full?(board)
 end
 
-#winner method
 def winner(board)
-  if win_combination = won?(board)
-    board[win_combination.first]
+  if winning_combo = won?(board)
+    board[winning_combo.first]
   end
 end
